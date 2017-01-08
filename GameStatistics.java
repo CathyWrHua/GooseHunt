@@ -1,3 +1,6 @@
+//Author: Cathy Hua
+//Date: January 8, 2017
+//Description: Player stats for the game
 
 public class GameStatistics {
 	private float gpa;
@@ -67,3 +70,4 @@ public class GameStatistics {
 		this.score += score;
 	}
 }
+
