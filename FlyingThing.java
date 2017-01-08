@@ -10,11 +10,13 @@ public class FlyingThing {
 	protected int lifetime;//lifetime in seconds
 	protected boolean isFlying;
 	protected boolean isStillAlive;
+	protected boolean disappeared;
 	
 	//Creates default flyingThing
 	FlyingThing(){
 		isFlying = true;
 		isStillAlive = true;
+		disappeared = false;
 		posX = (float) ThreadLocalRandom.current().nextDouble(-1, 1);
 		posY = -1; // note that posY very likely will need to be changed
 		lifetime = ThreadLocalRandom.current().nextInt(150, 210);
@@ -23,11 +25,28 @@ public class FlyingThing {
 	
 	//updates the object position and whether it was shot at or not
 	public void update() {
+		float accY = 1.001;
 		if (isFlying && isStillAlive){
 			changeX();
 			changeY();
 			
 			isFlying = changeLifetime(1);
+		}
+		else if (isStillAlive == false) {
+			if (posY > -1) {
+				accY * (posY -= speedY);
+			}
+			else {
+				disappeared = true;
+			}
+		}
+		else {
+			if (posY < 1) {
+				accY * (posy += speedY);
+			}
+			else {
+				disappeared = true;
+			}
 		}
 	}
 	
@@ -47,7 +66,16 @@ public class FlyingThing {
 	
 	//changes the Y coordinate according to random number generation
 	protected void changeY(){
-		posY += speedY;
+		speedY = (float) ThreadLocalRandom.current().nextDouble(-0.0008, 0.0012);
+		if (posY + speedY < -1 /*Change based on boundaries of gameplay screen*/ ){
+			posY = -1;
+		}
+		else if (posY + speedY > 1 /*Change based on boundaries of gameplay screen*/ ){
+			posY = 1;
+		}
+		else {
+			posY += speedY;
+		}
 	}
 	
 	//getter function for isFlying
@@ -83,6 +111,10 @@ public class FlyingThing {
 		return posY;
 	}
 	
+	public boolean getDisappeared() {
+		return disappeared;
+	}
+	
 	//gameloop timer changes lifetime
 	protected boolean changeLifetime (int time){
 		if (lifetime - time < 0){
@@ -95,3 +127,4 @@ public class FlyingThing {
 		return true;
 	}
 }
+
