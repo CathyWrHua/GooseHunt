@@ -1,3 +1,7 @@
+//Author: Cathy Hua
+//Date: January 8, 2017
+//Description: parent class for goose and drone
+
 import java.util.concurrent.ThreadLocalRandom;
 
 public class FlyingThing {
