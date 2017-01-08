@@ -1,3 +1,6 @@
+//Author: Cathy Hua
+//Date: January 8, 2017
+//Description: Goose class
 
 public class Goose extends FlyingThing {
 	private float gpaDeduction;
