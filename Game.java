@@ -85,15 +85,15 @@ public class Game {
 			// Update the objects
 			for (int i = 0; i < geese.size(); i++) {
 				geese.get(i).update();
-				if (!geese().get(i).getLifeTime()) {
-					geese().get(i).flyAway();
-					stats.decreaseGPA(0.5);
+				if (geese.get(i).getLifetime() == 0) {
+					geese.get(i).flyAway();
+					stats.decreaseGpa(geese.get(i).getGpaDeduction());
 				}
 			}
 			for (int j = 0; j < drones.size(); j++) {
 				drones.get(j).update();
-				if (!drones().get(j).getLifeTime()) {
-					drones().get(j).flyAway();
+				if (drones.get(j).getLifetime() == 0) {
+					drones.get(j).flyAway();
 				}
 			}
 			// Update the condition of the objects if they were clicked
@@ -107,7 +107,7 @@ public class Game {
 				for (int j = 0; j < drones.size(); j++) {
 					if (collided(mouseX, mouseY, drones.get(j).getPosX(), drones.get(j).getPosY(), DRONE_HIT_RANGE)) {
 						drones.get(j).kill();
-						stats.decreaseGPA(1);
+						stats.decreaseGpa(drones.get(j).getGpaDeduction());
 					}
 				}
 				stats.changeAmmo(circularCollided(mouseX, mouseY, RELOADX, RELOADY, RELOADR) ? 1 : -1);
