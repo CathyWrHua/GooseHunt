@@ -10,21 +10,9 @@ public class Goose extends FlyingThing {
 		pointsScored = 0;
 	}
 	
-	public void update(){
-		changeX();
-		changeY();
-	
-		if (lifetime == 0){
-			isFlying = false;
-			gpaDeduction = -0.5f;
-		}
-	}
-	
-	public void setIsStillAlive(boolean isShot){
-		if (isShot){
-			isStillAlive = false;
-			pointsScored = 10;
-		}
+	public void kill(){
+		isStillAlive = false;
+		pointsScored = 10;
 	}
 	
 	public int getPointsScored (){
@@ -33,5 +21,17 @@ public class Goose extends FlyingThing {
 	
 	public float getGpaDeduction() {
 		return gpaDeduction;
+	}
+	
+	protected boolean changeLifetime (int time){
+		if (lifetime - time < 0){
+			lifetime = 0;
+			gpaDeduction = -0.5f;
+			return false;
+		}
+		else{
+			lifetime -= time;
+		}
+		return true;
 	}
 }
