@@ -6,8 +6,8 @@ import java.util.*;
 
 public class Game {
 	// Constants
-	private final int MAXGEESE = 15;
-	private final int MAXDRONES = 5;
+	private final int GEESE_CAP = 10;
+	private final int DRONES_CAP = 1;
 	private final float GOOSE_HIT_RANGE = 0.05f;
 	private final float DRONE_HIT_RANGE = 0.04f;
 	private final float RELOADR = 0.04f;
@@ -23,20 +23,20 @@ public class Game {
 	private Random random;
 	
 	// Variables
+	private int maxGeese = 1;
+	private int maxDrones = 0;
 	private float gooseSpawnRate;
 	private float droneSpawnRate;
 	private float currentSpawn;
 	private boolean previouslyClicked;
 	
-	public enum GameState {
-		MENU, PLAY, ABOUT
-	}
+	public enum GameState {MENU, PLAY, ABOUT}
 	
 	// Constructor
 	public Game() {
 		states = new Stack<GameState>();
-		geese = new ArrayList<Goose>(MAXGEESE);
-		drones = new ArrayList<Drone>(MAXDRONES);
+		geese = new ArrayList<Goose>(maxGeese);
+		drones = new ArrayList<Drone>(maxDrones);
 		stats = new GameStatistics();
 		background = new Background();
 		random = new Random();
@@ -73,48 +73,70 @@ public class Game {
 		return drones;
 	}
 	
-	// Function that updates all of the ingame objects
+	// Accessor method for game statistics
+	public GameStatistics getGameStatistics() {
+		return stats;
+	}
+	
+	// Function that updates all of the in-game objects
 	public void update(float mouseX, float mouseY, boolean clicked) {
 		switch(states.peek()) {
-		case MENU: case ABOUT:
+		case MENU:
 			background.update();
+			if (clicked && collided(mouseX, mouseY, 0, -0.2f, 0.2f)) {
+				states.push(GameState.PLAY);
+			} else if (clicked && collided(mouseX, mouseY, 0, -0.65f, 0.2f)) {
+				states.push(GameState.ABOUT);
+			}
+			break;
+		case ABOUT:
+			background.update();
+			if (clicked && collided(mouseX, mouseY, 0, -0.5f, 0.2f)) {
+				states.pop();
+			}
 			break;
 		case PLAY:
 			currentSpawn = random.nextFloat();
 			// Spawn new drones and geese
 			if (droneSpawnRate > currentSpawn) {
-				if (drones.size() < MAXDRONES)
+				if (drones.size() < maxDrones)
 					drones.add(new Drone());
-				if (geese.size() < MAXGEESE)
+				if (geese.size() < maxGeese)
 					geese.add(new Goose());
 			} else if (gooseSpawnRate > currentSpawn) {
-				if (geese.size() < MAXGEESE)
+				if (geese.size() < maxGeese)
 					geese.add(new Goose());
 			}
 			// Update the objects
 			for (int i = 0; i < geese.size(); i++) {
-				geese.get(i).update();
+				geese.get(i).update(stats.getScore()/10);
 				if (geese.get(i).getLifetime() == 0) {
 					geese.get(i).flyAway();
 					stats.decreaseGpa(geese.get(i).getGpaDeduction());
 				}
+				if (geese.get(i).getDisappeared()) {
+					geese.remove(i);
+				}
 			}
 			for (int j = 0; j < drones.size(); j++) {
-				drones.get(j).update();
+				drones.get(j).update(stats.getScore()/10);
 				if (drones.get(j).getLifetime() == 0) {
 					drones.get(j).flyAway();
+				}
+				if (drones.get(j).getDisappeared()) {
+					drones.remove(j);
 				}
 			}
 			// Update the condition of the objects if they were clicked
 			if (clicked && previouslyClicked == false && stats.getAmmo() > 0) {
 				for (int i = 0; i < geese.size(); i++) {
-					if (collided(mouseX, mouseY, geese.get(i).getPosX(), geese.get(i).getPosY(), GOOSE_HIT_RANGE)) {
+					if (geese.get(i).getisStillAlive() == true && collided(mouseX, mouseY, geese.get(i).getPosX(), geese.get(i).getPosY(), GOOSE_HIT_RANGE)) {
 						geese.get(i).kill();
 						stats.addScore(geese.get(i).getPointsScored());
 					}
 				}
 				for (int j = 0; j < drones.size(); j++) {
-					if (collided(mouseX, mouseY, drones.get(j).getPosX(), drones.get(j).getPosY(), DRONE_HIT_RANGE)) {
+					if (drones.get(j).getisStillAlive() == true && collided(mouseX, mouseY, drones.get(j).getPosX(), drones.get(j).getPosY(), DRONE_HIT_RANGE)) {
 						drones.get(j).kill();
 						stats.decreaseGpa(drones.get(j).getGpaDeduction());
 					}
@@ -124,6 +146,9 @@ public class Game {
 			} else {
 				previouslyClicked = false;
 			}
+			maxGeese = (maxGeese < GEESE_CAP) ? 1+stats.getScore()/10 : GEESE_CAP;
+			maxDrones = (maxDrones < DRONES_CAP) ? stats.getScore()/10: DRONES_CAP;
+			
 			break;
 		}
 	}
