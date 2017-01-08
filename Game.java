@@ -110,7 +110,7 @@ public class Game {
 				for (int i = 0; i < geese.size(); i++) {
 					if (collided(mouseX, mouseY, geese.get(i).getPosX(), geese.get(i).getPosY(), GOOSE_HIT_RANGE)) {
 						geese.get(i).kill();
-						stats.addScore(1);
+						stats.addScore(geese.get(i).getPointsScored());
 					}
 				}
 				for (int j = 0; j < drones.size(); j++) {
