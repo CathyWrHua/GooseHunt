@@ -11,7 +11,6 @@ public class Game {
 	private final float GOOSE_HIT_RANGE = 0.05f;
 	private final float DRONE_HIT_RANGE = 0.04f;
 	private final float RELOADR = 0.04f;
-	
 	private final float RELOADX = -0.5f;
 	private final float RELOADY = -0.5f;
 	
