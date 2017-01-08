@@ -16,7 +16,7 @@ public class Goose extends FlyingThing {
 	//kill function that can be called for kill action of the goose
 	public void kill(){
 		isStillAlive = false;
-		pointsScored = 10;
+		pointsScored = 1;
 	}
 	
 	//returns pointsScored for killing (or not killing) goose
