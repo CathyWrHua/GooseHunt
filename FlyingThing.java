@@ -27,7 +27,7 @@ public class FlyingThing {
 	
 	//change x coordinate according to random x number generator;
 	protected void changeX(){
-		speedX = (float) ThreadLocalRandom.current().nextDouble(-0.10, 0.10);
+		speedX = (float) ThreadLocalRandom.current().nextDouble(-0.001, 0.001);
 		if (posX + speedX < -1){
 			posX = -1;
 		}
