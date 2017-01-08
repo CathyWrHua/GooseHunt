@@ -23,10 +23,12 @@ public class FlyingThing {
 	
 	//updates the object position and whether it was shot at or not
 	public void update() {
-		changeX();
-		changeY();
-		
-		isFlying = changeLifetime(1);
+		if (isFlying && isStillAlive){
+			changeX();
+			changeY();
+			
+			isFlying = changeLifetime(1);
+		}
 	}
 	
 	//change x coordinate according to random x number generator;
