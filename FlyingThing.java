@@ -12,18 +12,17 @@ public class FlyingThing {
 		isFlying = true;
 		isStillAlive = true;
 		posX = (float) ThreadLocalRandom.current().nextDouble(-1, 1);
-		posY = -1;
-		lifetime = ThreadLocalRandom.current().nextInt(3, 7);
-		speedY = (1-posY)/(30*lifetime);
+		posY = -1; // note that posY very likely will need to be changed
+		lifetime = ThreadLocalRandom.current().nextInt(150, 210);
+		speedY = (1-posY)/(lifetime);
 	}
 	
 	//updates the object position and whether it was shot at or not
 	public void update() {
-			changeX();
-			changeY();
+		changeX();
+		changeY();
 		
-			if (lifetime == 0)
-				isFlying = false;
+		isFlying = changeLifetime(1);
 	}
 	
 	//change x coordinate according to random x number generator;
@@ -50,6 +49,14 @@ public class FlyingThing {
 		return isFlying;
 	}
 	
+	public void flyAway(){
+		isFlying = false;
+	}
+	
+	public int getLifetime(){
+		return lifetime;
+	}
+	
 	//getter function for isStillAlive
 	public boolean getisStillAlive(){
 		return isStillAlive;
@@ -71,12 +78,13 @@ public class FlyingThing {
 	}
 	
 	//gameloop timer changes lifetime
-	public boolean changeLifetime (int time){
-		if (lifetime + time < 0){
+	protected boolean changeLifetime (int time){
+		if (lifetime - time < 0){
+			lifetime = 0;
 			return false;
 		}
 		else{
-			lifetime += time;
+			lifetime -= time;
 		}
 		return true;
 	}
