@@ -50,7 +50,7 @@ public class Game {
 	
 	// Function that checks if a mouse click is within a square of length 2*h at (x, y)
 	private boolean collided(float mouseX, float mouseY, float x, float y, float h) {
-		if (mouseX > x-h && mouseX < x+h && mouseY > x-h && mouseY < x+h)
+		if (mouseX > x-h && mouseX < x+h && mouseY > y-h && mouseY < y+h)
 			return true;
 		return false;
 	}
