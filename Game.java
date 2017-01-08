@@ -63,6 +63,16 @@ public class Game {
 		return false;
 	}
 
+	// Accessor method for geese
+	public ArrayList<Goose> getGeese() {
+		return geese;
+	}
+	
+	// Accessor method for drones
+	public ArrayList<Drone> getDrones() {
+		return drones;
+	}
+	
 	// Function that updates all of the ingame objects
 	public void update(float mouseX, float mouseY, boolean clicked) {
 		switch(states.peek()) {
