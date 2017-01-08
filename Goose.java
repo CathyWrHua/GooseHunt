@@ -13,23 +13,27 @@ public class Goose extends FlyingThing {
 		pointsScored = 0;
 	}
 	
+	//kill function that can be called for kill action of the goose
 	public void kill(){
 		isStillAlive = false;
 		pointsScored = 10;
 	}
 	
+	//returns pointsScored for killing (or not killing) goose
 	public int getPointsScored (){
 		return pointsScored;
 	}
 	
+	//returns deduction of gpaDeduction
 	public float getGpaDeduction() {
 		return gpaDeduction;
 	}
 	
+	//changes lifetime of the goose before it flies away
 	protected boolean changeLifetime (int time){
 		if (lifetime - time < 0){
 			lifetime = 0;
-			gpaDeduction = -0.5f;
+			gpaDeduction = 0.5f;
 			return false;
 		}
 		else{
