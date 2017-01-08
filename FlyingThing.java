@@ -25,7 +25,7 @@ public class FlyingThing {
 	
 	//updates the object position and whether it was shot at or not
 	public void update() {
-		float accY = 1.001;
+		float accY = 1.001f;
 		if (isFlying && isStillAlive){
 			changeX();
 			changeY();
