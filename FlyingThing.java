@@ -34,7 +34,7 @@ public class FlyingThing {
 		}
 		else if (isStillAlive == false) {
 			if (posY > -1) {
-				accY * (posY -= speedY);
+				posY -= (accY * speedY);
 			}
 			else {
 				disappeared = true;
@@ -42,7 +42,7 @@ public class FlyingThing {
 		}
 		else {
 			if (posY < 1) {
-				accY * (posy += speedY);
+				posY += (accY * speedY);
 			}
 			else {
 				disappeared = true;
