@@ -37,7 +37,7 @@ public class Game {
 	public Game() {
 		states = new Stack<GameState>();
 		geese = new ArrayList<Goose>(MAXGEESE);
-		drones = new ArrayList<drones>(MAXDRONES);
+		drones = new ArrayList<Drone>(MAXDRONES);
 		stats = new GameStatistics();
 		background = new Background();
 		random = new Random();
@@ -77,10 +77,10 @@ public class Game {
 				if (drones.size() < MAXDRONES)
 					drones.add(new Drone());
 				if (geese.size() < MAXGEESE)
-					geese.add(new Geese());
-			} else if (geeseSpawnRate > currentSpawn) {
+					geese.add(new Goose());
+			} else if (gooseSpawnRate > currentSpawn) {
 				if (geese.size() < MAXGEESE)
-					geese.add(new Geese());
+					geese.add(new Goose());
 			}
 			// Update the objects
 			for (int i = 0; i < geese.size(); i++) {
